@@ -18,52 +18,46 @@
 
   .farm {
     background: #fff;
-    padding: 25px;
-    border-radius: 20px;
     width: 320px;
+    padding: 20px;
+    border-radius: 22px;
     text-align: center;
     box-shadow: 0 10px 25px rgba(0,0,0,0.25);
   }
 
   h1 {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+  }
+
+  .info {
+    font-size: 14px;
+    color: #555;
   }
 
   .field {
-    width: 120px;
-    height: 120px;
-    background: #8d6e63;
-    border-radius: 18px;
+    width: 140px;
+    height: 140px;
     margin: 20px auto;
+    background: #8d6e63;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 48px;
-    cursor: pointer;
-    transition: transform 0.2s;
+    font-size: 56px;
+    user-select: none;
   }
 
-  .field:hover {
-    transform: scale(1.05);
-  }
-
-  button {
-    padding: 10px 18px;
-    font-size: 16px;
-    border: none;
-    border-radius: 14px;
-    background: #ff7eb3;
-    color: white;
-    cursor: pointer;
+  .field:active {
+    transform: scale(0.95);
   }
 
   .message {
-    margin-top: 15px;
-    font-size: 16px;
+    margin-top: 10px;
     min-height: 40px;
+    font-size: 16px;
   }
 
-  .counter {
+  .stats {
     margin-top: 10px;
     font-weight: bold;
   }
@@ -74,54 +68,46 @@
 
 <div class="farm">
   <h1>Mini Çiftliğimiz 💕</h1>
-  <p>Birlikte ekip birlikte büyütelim 🌱</p>
+  <div class="info">Toprağa dokun → ek → bekle → biç 🌾</div>
 
-  <div class="field" id="field">🌱</div>
+  <div class="field" id="field">🟫</div>
 
-  <button id="actionBtn">Ekim Yap</button>
-
-  <div class="message" id="message"></div>
-  <div class="counter">Hasat: <span id="count">0</span></div>
+  <div class="message" id="message">Toprağa dokunarak ekim yap 🌱</div>
+  <div class="stats">Hasat: <span id="count">0</span></div>
 </div>
 
 <script>
   const field = document.getElementById("field");
-  const actionBtn = document.getElementById("actionBtn");
   const message = document.getElementById("message");
   const countSpan = document.getElementById("count");
 
   let state = "empty"; // empty, growing, ready
-  let harvestCount = 0;
+  let harvest = 0;
 
-  actionBtn.addEventListener("click", () => {
+  field.addEventListener("click", () => {
     if (state === "empty") {
       state = "growing";
       field.textContent = "🌱";
       message.textContent = "Ektin 🌱 Büyümesini bekleyelim...";
-      actionBtn.disabled = true;
-
+      
       setTimeout(() => {
         state = "ready";
-        field.textContent = "🌻";
-        message.textContent = "Hazır 💛 Hasat yapabilirsin!";
-        actionBtn.textContent = "Hasat Yap";
-        actionBtn.disabled = false;
+        field.textContent = "🌽";
+        message.textContent = "Hazır 🌽 Dokun ve hasat yap!";
       }, 3000);
 
     } else if (state === "ready") {
-      harvestCount++;
-      countSpan.textContent = harvestCount;
+      harvest++;
+      countSpan.textContent = harvest;
       state = "empty";
       field.textContent = "🟫";
-      actionBtn.textContent = "Ekim Yap";
 
       const messages = [
-        "Birlikte büyütmek çok güzel 💖",
-        "Bu çiftlik bizden sorulur 😌",
-        "Emek verince her şey güzel oluyor 🌸",
-        "Hasat güzel ama sen daha güzelsin 😘"
+        "karım en iyisini yapar 💖",
+        "Bu çiftlik çok tatlı oldu aynı benim karım 😌",
+        "Emek verince güzelleşiyor tıpkı senin gibi aşkım 🌸",
+        "Hasat tamam 🌾 Sen de kalbimi biçtin 😘"
       ];
-
       message.textContent = messages[Math.floor(Math.random() * messages.length)];
     }
   });
