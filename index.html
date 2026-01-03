@@ -3,114 +3,163 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mini Çiftliğimiz 💖</title>
+<title>Enes ❤️ Yasemin’in Çiftliği</title>
 
 <style>
-  body {
-    margin: 0;
-    height: 100vh;
-    background: linear-gradient(135deg, #a8e063, #56ab2f);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Arial, sans-serif;
-  }
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #ffb6c1, #a8e063);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+}
 
-  .farm {
-    background: #fff;
-    width: 320px;
-    padding: 20px;
-    border-radius: 22px;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-  }
+.farm {
+  background: #fff;
+  width: 340px;
+  padding: 20px;
+  border-radius: 22px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
 
-  h1 {
-    margin-bottom: 5px;
-  }
+h1 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
 
-  .info {
-    font-size: 14px;
-    color: #555;
-  }
+.stats {
+  display: flex;
+  justify-content: space-around;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
-  .field {
-    width: 140px;
-    height: 140px;
-    margin: 20px auto;
-    background: #8d6e63;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 56px;
-    user-select: none;
-  }
+.field {
+  width: 140px;
+  height: 140px;
+  margin: 15px auto;
+  background: #8d6e63;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  user-select: none;
+}
 
-  .field:active {
-    transform: scale(0.95);
-  }
+.field:active { transform: scale(0.95); }
 
-  .message {
-    margin-top: 10px;
-    min-height: 40px;
-    font-size: 16px;
-  }
+.buttons button {
+  margin: 5px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 14px;
+  font-size: 14px;
+  background: #ff7eb3;
+  color: white;
+}
 
-  .stats {
-    margin-top: 10px;
-    font-weight: bold;
-  }
+.animals {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.animal {
+  font-size: 40px;
+}
+
+.message {
+  min-height: 40px;
+  font-size: 15px;
+  margin-top: 8px;
+}
 </style>
 </head>
 
 <body>
 
+<audio id="music" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">
+</audio>
+
 <div class="farm">
-  <h1>Mini Çiftliğimiz 💕</h1>
-  <div class="info">Toprağa dokun → ek → bekle → biç 🌾</div>
+  <h1>Enes ❤️ Yasemin’in Çiftliği</h1>
+
+  <div class="stats">
+    <div>💰 <span id="money">20</span></div>
+    <div>🌾 <span id="harvest">0</span></div>
+  </div>
 
   <div class="field" id="field">🟫</div>
 
+  <div class="buttons">
+    <button id="waterBtn">💧 Sula</button>
+  </div>
+
+  <div class="animals">
+    <div class="animal">🐔 <br>+2💰</div>
+    <div class="animal">🐄 <br>+4💰</div>
+  </div>
+
   <div class="message" id="message">Toprağa dokunarak ekim yap 🌱</div>
-  <div class="stats">Hasat: <span id="count">0</span></div>
 </div>
 
 <script>
-  const field = document.getElementById("field");
-  const message = document.getElementById("message");
-  const countSpan = document.getElementById("count");
+const field = document.getElementById("field");
+const message = document.getElementById("message");
+const moneySpan = document.getElementById("money");
+const harvestSpan = document.getElementById("harvest");
+const waterBtn = document.getElementById("waterBtn");
+const music = document.getElementById("music");
 
-  let state = "empty"; // empty, growing, ready
-  let harvest = 0;
+let state = "empty";
+let money = 20;
+let harvest = 0;
+let watered = false;
 
-  field.addEventListener("click", () => {
-    if (state === "empty") {
-      state = "growing";
-      field.textContent = "🌱";
-      message.textContent = "Ektin 🌱 Büyümesini bekleyelim...";
-      
-      setTimeout(() => {
-        state = "ready";
-        field.textContent = "🌽";
-        message.textContent = "Hazır 🌽 Dokun ve hasat yap!";
-      }, 3000);
+document.body.addEventListener("click", () => {
+  music.play().catch(()=>{});
+}, { once:true });
 
-    } else if (state === "ready") {
-      harvest++;
-      countSpan.textContent = harvest;
-      state = "empty";
-      field.textContent = "🟫";
+field.addEventListener("click", () => {
+  if (state === "empty") {
+    state = "planted";
+    field.textContent = "🌱";
+    message.textContent = "Ektin 🌱 Şimdi sulamalısın 💧";
+    watered = false;
+  }
+  else if (state === "ready") {
+    harvest++;
+    money += 5;
+    harvestSpan.textContent = harvest;
+    moneySpan.textContent = money;
+    state = "empty";
+    field.textContent = "🟫";
+    message.textContent = "Hasat tamam 🌾 Birlikte büyütüyoruz 💖";
+  }
+});
 
-      const messages = [
-        "karım en iyisini yapar 💖",
-        "Bu çiftlik çok tatlı oldu aynı benim karım 😌",
-        "Emek verince güzelleşiyor tıpkı senin gibi aşkım 🌸",
-        "Hasat tamam 🌾 Sen de kalbimi biçtin 😘"
-      ];
-      message.textContent = messages[Math.floor(Math.random() * messages.length)];
-    }
-  });
+waterBtn.addEventListener("click", () => {
+  if (state === "planted" && !watered) {
+    watered = true;
+    field.textContent = "💦";
+    message.textContent = "Sulandı 💦 Büyüyor...";
+    setTimeout(() => {
+      state = "ready";
+      field.textContent = "🌽";
+      message.textContent = "Hazır 🌽 Dokun ve hasat yap!";
+    }, 3000);
+  }
+});
+
+setInterval(() => {
+  money += 6; // tavuk + inek
+  moneySpan.textContent = money;
+}, 5000);
 </script>
 
 </body>
