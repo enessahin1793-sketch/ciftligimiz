@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Çiftliğimiz 💖</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #a8e063, #56ab2f);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+  }
+
+  .farm {
+    background: #fff;
+    padding: 25px;
+    border-radius: 20px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  }
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  .field {
+    width: 120px;
+    height: 120px;
+    background: #8d6e63;
+    border-radius: 18px;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .field:hover {
+    transform: scale(1.05);
+  }
+
+  button {
+    padding: 10px 18px;
+    font-size: 16px;
+    border: none;
+    border-radius: 14px;
+    background: #ff7eb3;
+    color: white;
+    cursor: pointer;
+  }
+
+  .message {
+    margin-top: 15px;
+    font-size: 16px;
+    min-height: 40px;
+  }
+
+  .counter {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="farm">
+  <h1>Mini Çiftliğimiz 💕</h1>
+  <p>Birlikte ekip birlikte büyütelim 🌱</p>
+
+  <div class="field" id="field">🌱</div>
+
+  <button id="actionBtn">Ekim Yap</button>
+
+  <div class="message" id="message"></div>
+  <div class="counter">Hasat: <span id="count">0</span></div>
+</div>
+
+<script>
+  const field = document.getElementById("field");
+  const actionBtn = document.getElementById("actionBtn");
+  const message = document.getElementById("message");
+  const countSpan = document.getElementById("count");
+
+  let state = "empty"; // empty, growing, ready
+  let harvestCount = 0;
+
+  actionBtn.addEventListener("click", () => {
+    if (state === "empty") {
+      state = "growing";
+      field.textContent = "🌱";
+      message.textContent = "Ektin 🌱 Büyümesini bekleyelim...";
+      actionBtn.disabled = true;
+
+      setTimeout(() => {
+        state = "ready";
+        field.textContent = "🌻";
+        message.textContent = "Hazır 💛 Hasat yapabilirsin!";
+        actionBtn.textContent = "Hasat Yap";
+        actionBtn.disabled = false;
+      }, 3000);
+
+    } else if (state === "ready") {
+      harvestCount++;
+      countSpan.textContent = harvestCount;
+      state = "empty";
+      field.textContent = "🟫";
+      actionBtn.textContent = "Ekim Yap";
+
+      const messages = [
+        "Birlikte büyütmek çok güzel 💖",
+        "Bu çiftlik bizden sorulur 😌",
+        "Emek verince her şey güzel oluyor 🌸",
+        "Hasat güzel ama sen daha güzelsin 😘"
+      ];
+
+      message.textContent = messages[Math.floor(Math.random() * messages.length)];
+    }
+  });
+</script>
+
+</body>
+</html>
